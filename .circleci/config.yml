@@ -77,10 +77,11 @@ workflows:
       - build:
           requires:
           - long
+          - long
+          - long
+          - long
+          - long
       
       - thang
-      - build:
-          requires:
-          - thang
       - long
       # - test
