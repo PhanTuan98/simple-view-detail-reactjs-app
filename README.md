@@ -1,0 +1,1 @@
+# simple-view-detail-reactjs-app
