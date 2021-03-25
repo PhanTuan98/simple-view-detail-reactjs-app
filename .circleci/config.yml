@@ -1,15 +1,10 @@
 version: 2.1
 
-executors:
-  my-executor:
+jobs:
+  build:
     docker:
       - image: circleci/node:12.20.2
     working_directory: ~/repo
-
-jobs:
-  build:
-    executor: my-executor
-
     steps:
       - checkout
       - run: 
@@ -43,9 +38,27 @@ jobs:
       - store_artifacts:
           path: build
           destination: BuildResult
+  
+  test:
+    docker:
+      - image: circleci/node:12.20.2
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: mkdir test-reports
+      - run:
+          name: Download Selenium
+          command: |
+            curl -O http://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar
+      - run:
+          name: Start Selenium
+          command: |
+            java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
+          background: true
 
 workflows:
   version: 2.1
   workflow:
     jobs:
-      - build
+      # - build
+      - test
