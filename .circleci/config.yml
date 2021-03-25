@@ -56,9 +56,31 @@ jobs:
             java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
           background: true
 
+  thang:
+    docker:
+      - image: circleci/node:12.20.2
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+  long:
+    docker:
+      - image: circleci/node:12.20.2
+    working_directory: ~/repo
+    steps:
+      - checkout
+
 workflows:
   version: 2.1
   workflow:
     jobs:
-      # - build
-      - test
+      - build:
+          requires:
+          - long
+      
+      - thang
+      - build:
+          requires:
+          - thang
+      - long
+      # - test
